@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 function App() {
   const [clickedKeys, setClickedKeys] = useState([]);
@@ -6,9 +6,12 @@ function App() {
 
   const handleKeyPress = (event) => {
     const digit = event.key;
-    const newKey = { id: clickCount + 1, digit, keyCode: event.keyCode };
-    setClickedKeys((prevClickedKeys) => [...prevClickedKeys, newKey]);
-    setClickCount((prevCount) => prevCount + 1);
+    // Check if the pressed key is a number
+    if (!isNaN(digit) && digit !== ' ') {
+      const newKey = { id: clickCount + 1, digit, keyCode: event.keyCode };
+      setClickedKeys(prevClickedKeys => [...prevClickedKeys, newKey]);
+      setClickCount(prevCount => prevCount + 1);
+    }
   };
 
   return (
@@ -17,7 +20,7 @@ function App() {
       {clickedKeys.length > 0 && (
         <ul>
           {clickedKeys.map((key, index) => (
-            <li key={key.id}>{`${key.id}: your ID-${key.digit}`}</li>
+            <li key={key.id}>{`ID: ${key.id}, You pressed: ${key.digit}`}</li>
           ))}
         </ul>
       )}
