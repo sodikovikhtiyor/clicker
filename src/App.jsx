@@ -11,6 +11,8 @@ function App() {
       const newKey = { id: clickCount + 1, digit, keyCode: event.keyCode };
       setClickedKeys(prevClickedKeys => [...prevClickedKeys, newKey]);
       setClickCount(prevCount => prevCount + 1);
+    } else {
+      alert("You clicked a letter instead of a number!");
     }
   };
 
