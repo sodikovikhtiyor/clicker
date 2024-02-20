@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./App.css"; // import the CSS file
 
 function App() {
   const [clickedKeys, setClickedKeys] = useState([]);
@@ -17,8 +18,8 @@ function App() {
   };
 
   return (
-    <div className="App" tabIndex={0} onKeyDown={handleKeyPress}>
-      <h1>Press me to start</h1>
+    <div className="container" tabIndex={0} onKeyDown={handleKeyPress}>
+      <h1>Press any key</h1>
       {clickedKeys.length > 0 && (
         <ul>
           {clickedKeys.map((key, index) => (
