@@ -1,58 +1,91 @@
-import React, { useEffect, useState } from "react";
-import "./App.css"; // import the CSS file
-import logi from "../src/assets/logi.png";
+import React, { useEffect, useRef, useState } from "react";
+import "./App.css";
+import logo from "../src/assets/logo.png";
+import soundFile from "../src/assets/sound.wav";
+
 function App() {
-  const [clickedKeys, setClickedKeys] = useState([]);
-  const [clickCount, setClickCount] = useState(0);
-  const [messages, setMessages] = useState([
-    "first",
-    "second",
-    "third",
-    "fourth",
-    "fifth",
-  ]);
+  const [messages, setMessages] = useState([]);
+  const [playAudio, setPlayAudio] = useState(false);
+  const [order, setOrder] = useState([]);
+  const audioRef = useRef(null);
 
   useEffect(() => {
-    const socket = new WebSocket("ws://192.168.52.216:8765");
+    const socket = new WebSocket("ws://192.168.23.216:8765");
 
     socket.addEventListener("open", function (event) {
       socket.send("Hello Server!");
     });
 
     socket.addEventListener("message", function (event) {
-      // When a message is received, update the messages state with the new message
-      setMessages((prevMessages) => [...prevMessages, event.data]);
+      if (event.data !== "0") {
+        const message = parseInt(event.data);
+        setMessages((prevMessages) => [...prevMessages, message]);
+        setOrder((prevOrder) => [...prevOrder, message]);
+        setPlayAudio(true); // Set playAudio to true whenever a message is received
+      }
     });
 
-    // Clean up the WebSocket connection when the component unmounts
     return () => {
       socket.close();
     };
-  }, []); // empty dependency array ensures this effect runs only once
+  }, []);
 
-  // const handleKeyPress = (event) => {
-  //   const digit = event.key;
-  //   // Check if the pressed key is a number
-  //   if (!isNaN(digit) && digit !== " ") {
-  //     const newKey = { id: clickCount + 1, digit, keyCode: event.keyCode };
-  //     setClickedKeys((prevClickedKeys) => [...prevClickedKeys, newKey]);
-  //     setClickCount((prevCount) => prevCount + 1);
-  //   } else {
-  //     alert("You clicked a letter instead of a number!");
-  //   }
-  // };
+  useEffect(() => {
+    if (playAudio) {
+      audioRef.current.play();
+      setPlayAudio(false); // Reset playAudio to false after playing audio
+    }
+  }, [playAudio]);
+
+  const handleButtonClick = () => {
+    if (!audioRef.current.paused) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+    audioRef.current.play();
+  };
 
   return (
     <div className="container" tabIndex={0}>
-      <img src={logi} alt="" width="300px" />
-      <h1>Amity University Welcomes To You !</h1>
-      <div>
-        {messages.map((message, index) => (
-          <div key={index} className="classBox">
-            <h4>{index + 1}</h4>
-            <p>{message}</p>
-          </div>
-        ))}
+      <div className="header">
+        <img src={logo} width="300px" alt="Logo" />
+        <h1>
+          Amity University Welcomes You To International English Olympiad!
+        </h1>
+      </div>
+      <audio ref={audioRef} src={soundFile} />
+      <button onClick={handleButtonClick} style={{ display: "none" }}></button>
+      <div className="main-body">
+        <div className="column">
+          {[...Array(5)].map((_, ind) => (
+            <div
+              key={ind}
+              className={`box ${messages.includes(5 - ind) ? "active" : ""}`}
+            >
+              <span>{5 - ind}th</span>
+              <div>
+                {messages.includes(5 - ind) && (
+                  <p>{order.indexOf(5 - ind) + 1} click</p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="column">
+          {[...Array(5)].map((_, ind) => (
+            <div
+              key={ind + 5}
+              className={`box ${messages.includes(ind + 6) ? "active" : ""}`}
+            >
+              <span>{ind + 6}</span>Card
+              <div>
+                {messages.includes(ind + 6) && (
+                  <p>{order.indexOf(ind + 6) + 1}</p>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

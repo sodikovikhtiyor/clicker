@@ -3,49 +3,72 @@ body {
   background: linear-gradient(rgba(0, 0, 0, 0.788), rgba(0, 0, 0, 0.751)),
     url("../src/assets/amity.jpg") center / cover no-repeat;
   margin: 0;
-  padding: 0;
+  padding: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 }
 
 .container {
   background-color: #f0f0f0;
+  height: 100vh;
+  margin: 0 auto;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 3rem;
   text-align: center;
 }
-.classBox {
+.main-body {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-around;
+}
+.box {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid black;
+  margin-bottom: 1rem;
+  width: 200px;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+}
+.box.active {
+  background-color: blue;
+  color: white; /* Change the background color to blue */
+}
+span {
+  background-color: #213547;
+  text-align: center;
+  display: block;
+  border-radius: 50px;
+  padding: 12px;
+  width: 30px;
+  font-size: 1.2rem;
+  color: #fff;
+  margin: 0;
+}
+
+p {
+  font-weight: bold;
+  display: inline-block;
+  text-transform: uppercase;
+  vertical-align: middle;
+  font-size: 1.2rem;
+  margin: 0;
+}
+.header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  flex-direction: row;
-  flex-wrap: wrap;
-
-  padding: 0 1.5rem;
-  font-size: 1.2rem;
-  border: 1px solid rgb(180, 180, 180);
-  border-radius: 15px;
-  margin: 0.8rem 0;
 }
-h4 {
-  background-color: #213547;
-  text-align: center;
-  border-radius: 50px;
-  color: #fff;
-  padding: 0 0.7rem;
-  /* width: 60px;
-  height: 60px; */
+img {
+  display: inline-block;
+  width: 200px;
 }
-p {
-  font-weight: bold;
-  text-transform: uppercase;
-}
-h1 {
-  text-align: center;
-  margin-bottom: 40px;
+.header h1 {
+  font-size: 2rem;
 }
 
 ul {
